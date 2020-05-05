@@ -60,6 +60,16 @@ Dependencies: [sshfs](https://github.com/libfuse/sshfs)
 
 Usage: `mountsystem SYSTEM_NAME`
 
+## paleofetch
+
+A rewrite of [neofetch](https://github.com/dylanaraps/neofetch) in C written by [sam-barr](https://github.com/sam-barr). More documentation available on his [github](https://github.com/sam-barr/paleofetch)
+
+Language: C
+
+Dependencies: libX11, libpci
+
+Usage: `paleofetch`
+
 ## portscan
 
 This program was written by [tux2603](https://github.com/tux2603/QuickLittleUtils/blob/master/portCheck). It checks all ports within a range on a given system and outputs if they're open.
