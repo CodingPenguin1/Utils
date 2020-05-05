@@ -4,8 +4,6 @@ This is a directory containing all the short, but useful, little scripts I use o
 
 ## backup
 
-----------------
-
 This is a modified version of the sample [Borg Backup script](https://borgbackup.readthedocs.io/en/stable/quickstart.html). This is a little personalized. You'll want to edit the `--exclude` lines in `src/backup` to match what you want to not backup.
 
 Language: Bash
@@ -15,8 +13,6 @@ Dependencies: [Borg Backup](https://borgbackup.readthedocs.io/en/1.1-maint/insta
 Usage: `backup /PATH/TO/BORG/REPOSITORY`
 
 ## mountsystem
-
-----------------
 
 This script is used to mount the home directory of a user on a remote system to a directory in the local user's home directory. For example, say the following properties are true:
 
@@ -47,8 +43,6 @@ Dependencies: [sshfs](https://github.com/libfuse/sshfs)
 Usage: `mountsystem SYSTEM_NAME`
 
 ## portscan
-
-----------------
 
 This program was written by [tux2603](https://github.com/tux2603/QuickLittleUtils/blob/master/portCheck). It checks all ports within a range on a given system and outputs if they're open.
 
@@ -83,3 +77,21 @@ Passing -h as an argument will print out this help message.
 
 -☃, the Unicode Snowman
 ```
+
+## sshsystem
+
+SSH a system by providing a system name, and just a system name.
+
+This requires you to have the following files:
+
+`~/.SYSTEM_NAME_IP`  (Used to store the IP of SYSTEM_NAME. Replace SYSTEM_NAME with whatever you want)
+
+`~/.ssh/SYSTEM_NAME_rsa`  (RSA key for the system. Learn how to set up an RSA key pair [here](https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2))
+
+If you set up your RSA keys and filesystem structure like `mountsystem` requires, this will already be done.
+
+Language: Python
+
+Dependencies: None
+
+Usage: `sshsystem SYSTEM_NAME`
