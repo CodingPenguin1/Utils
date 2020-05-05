@@ -25,11 +25,9 @@ Usage: `diskusage` (you may need to run it as root, depending on your setup)
 Options (optional):
 
 ``` bash
---style ["polybar", "htop"]
-
---showNames ["true", "false"]
-
---oneLine ["true", "false"]
+-p, --polybar   Switch to vertical bars that more nicely fit on a polybar
+-o, --oneLine   Print all output on one line (must have -p flag as well to work)
+-n, --noNames   Do not print the names of drives
 ```
 
 ## mountsystem

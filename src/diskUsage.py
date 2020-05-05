@@ -153,27 +153,19 @@ if __name__ == '__main__':
 
     # Assign default print options
     style = 'htop'
-    showNames = True
+    noNames = False
     oneLine = False
 
     # Get print options from CLI args
     args = sys.argv[1:]
-    for i, arg in enumerate(args):
-        # Check for style
-        if '--style' in arg:
-            if args[i + 1].lower() in ['htop', 'polybar']:
-                style = args[i + 1].lower()
-
-        # Check for showNames
-        if '--showNames' in arg:
-            if args[i + 1].lower() == 'false':
-                showNames = False
-
-        # Check for oneNames
-        if '--oneLine' in arg:
-            if args[i + 1].lower() == 'true':
-                oneLine = True
+    for arg in args:
+        if '-p' in arg:
+            style = 'polybar'
+        if '-n' in arg:
+            noNames = True
+        if '-o' in arg:
+            oneLine = True
 
     # Print drive usage bars
     for drive in drives:
-        drive.printUsageBar(style=style, showNames=showNames, oneLine=oneLine)
+        drive.printUsageBar(style=style, showNames=(not noNames), oneLine=oneLine)
