@@ -12,6 +12,26 @@ Dependencies: [Borg Backup](https://borgbackup.readthedocs.io/en/1.1-maint/insta
 
 Usage: `backup /PATH/TO/BORG/REPOSITORY`
 
+## diskusage
+
+This script provides a fast listing of disk usage. It automatically finds mounted partions of `/dev/sdXY`, anything mounted in `/mnt`, and the `/tmp` directory. There are a few options for styling the output.
+
+Language: Python
+
+Dependencies: [termcolor](https://pypi.org/project/termcolor2/)
+
+Usage: `diskusage` (you may need to run it as root, depending on your setup)
+
+Options (optional):
+
+``` bash
+--style ["polybar", "htop"]
+
+--showNames ["true", "false"]
+
+--oneLine ["true", "false"]
+```
+
 ## mountsystem
 
 This script is used to mount the home directory of a user on a remote system to a directory in the local user's home directory. For example, say the following properties are true:
