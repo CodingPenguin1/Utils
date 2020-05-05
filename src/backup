@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+
+# Setting this, so the repo does not need to be given on the commandline:
+export BORG_REPO=$1
+
+# Setting this, so you won't be asked for your repository passphrase:
+export BORG_PASSPHRASE=''
+# or this to ask an external program to supply the passphrase:
+#export BORG_PASSCOMMAND='pass show backup'
+
+# some helpers and error handling:
+info() { printf "\n%s %s\n\n" "$( date )" "$*" >&2; }
+trap 'echo $( date ) Backup interrupted >&2; exit 2' INT TERM
+
+info "Starting backup"
+
+# Backup the most important directories into an archive named after
+# the machine this script is currently running on:
+
+borg create -p                                         \
+    --verbose                                          \
+    --list                                             \
+    --stats                                            \
+    --filter AME                                       \
+    --compression lz4                                  \
+    --exclude-caches                                   \
+    --exclude '*.iso'                                  \
+    --exclude '*cache*'                                \
+    --exclude '*Cache*'                                \
+    --exclude '*trash*'                                \
+    --exclude '*Trash*'                                \
+    --exclude '/home/*/.cache/*'                       \
+    --exclude '/home/rjslater/.cache/*'                \
+    --exclude '/home/rjslater/.config/code'            \
+    --exclude '/home/rjslater/.config/Code'            \
+    --exclude '/home/rjslater/.config/discord'         \
+    --exclude '/home/rjslater/.config/google-chrome'   \
+    --exclude '/home/rjslater/.local/share/Steam'      \
+    --exclude '/home/rjslater/.local/share/Trash'      \
+    --exclude '/home/rjslater/.local/share/vifm/Trash' \
+    --exclude '/home/rjslater/.mozilla'                \
+    --exclude '/home/rjslater/.mozilla/*'              \
+    --exclude '/home/rjslater/.steam'                  \
+    --exclude '/home/rjslater/.vifm*'                  \
+    --exclude '/home/rjslater/.vscode*'                \
+    --exclude '/home/rjslater/anaconda3/*'             \
+    --exclude '/home/rjslater/FRIDAY/*'                \
+    --exclude '/home/rjslater/JARVIS/*'                \
+    --exclude '/home/rjslater/Karen/*'                 \
+    --exclude '/home/rjslater/Steam'                   \
+    --exclude '/home/rjslater/.thunderbird/*'          \
+    ::'{hostname}-{now}'                               \
+    /home                                              \
+
+backup_exit=$?
+
+info "Pruning repository"
+
+# Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
+# archives of THIS machine. The '{hostname}-' prefix is very important to
+# limit prune's operation to this machine's archives and not apply to
+# other machines' archives also:
+
+borg prune                          \
+    --list                          \
+    --prefix '{hostname}-'          \
+    --show-rc                       \
+    --keep-daily    7               \
+    --keep-weekly   4               \
+    --keep-monthly  6               \
+
+prune_exit=$?
+
+# use highest exit code as global exit code
+global_exit=$(( backup_exit > prune_exit ? backup_exit : prune_exit ))
+
+if [ ${global_exit} -eq 0 ]; then
+    info "Backup and Prune finished successfully"
+elif [ ${global_exit} -eq 1 ]; then
+    info "Backup and/or Prune finished with warnings"
+else
+    info "Backup and/or Prune finished with errors"
+fi
+
+exit ${global_exit}

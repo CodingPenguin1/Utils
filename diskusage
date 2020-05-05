@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+from termcolor import colored
+import subprocess
+
+
+class Drive:
+    def __init__(self, name='drive', mountPoint='', displayName='DisplayName'):
+        self.name = name
+        self.displayName = name if displayName == 'DisplayName' else displayName
+
+        # In bytes
+        if mountPoint != '':
+            self.mountPoint = mountPoint
+        else:
+            self.getMountPoint()
+        self.getUsage()
+        self.getCapacity()
+        self.usagePercent = self.usage / self.capacity
+
+    def getMountPoint(self):
+        ps = subprocess.Popen(f'df | grep {self.name}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = ps.communicate()[0].decode('utf-8').strip().split('\n')
+        output = [part.strip() for part in output[0].split(' ') if len(part.strip()) > 0]
+        self.mountPoint = output[-1]
+
+    def getUsage(self):
+        ps = subprocess.Popen(f'df | grep {self.mountPoint}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = ps.communicate()[0].decode('utf-8').strip().split('\n')
+        output = [part.strip() for part in output[0].split(' ') if len(part.strip()) > 0]
+        self.usage = float(output[2]) * 2**10
+
+    def getCapacity(self):
+        ps = subprocess.Popen(f'df | grep {self.mountPoint}', shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        output = ps.communicate()[0].decode('utf-8').strip().split('\n')
+        output = [part.strip() for part in output[0].split(' ') if len(part.strip()) > 0]
+        self.capacity = (float(output[2]) + float(output[3])) * 2**10
+
+    def printUsageBar(self, barWidth=50, green=0.75, yellow=0.9):
+        numFillerChars = int(barWidth * self.usagePercent)
+        print(f'{self.displayName}\t[', end='')
+
+        if self.usagePercent < green:
+            print(colored(numFillerChars * '|', 'green'), end='')
+        elif self.usagePercent < yellow:
+            print(colored(numFillerChars * '|', 'yellow'), end='')
+        else:
+            print(colored(numFillerChars * '|', 'red'), end='')
+
+        print((barWidth - numFillerChars) * ' ', end='')
+        print('] ', end='')
+
+        print(f'{toHumanReadable(self.usage)} / {toHumanReadable(self.capacity)}', end='')
+
+        if self.usagePercent < green:
+            print('\t' + colored(str(round(100 * self.usagePercent, 1)), 'green') + '%')
+        elif self.usagePercent < yellow:
+            print('\t' + colored(str(round(100 * self.usagePercent, 1)), 'yellow') + '%')
+        else:
+            print('\t' + colored(str(round(100 * self.usagePercent, 1)), 'red') + '%')
+
+
+def toHumanReadable(size):
+    if size < 2**10:
+        return f'{round(size, 1)}B'
+    elif size < 2**20:
+        return f'{round(size / 2**10, 1)}K'
+    elif size < 2**30:
+        return f'{round(size / 2**20, 1)}M'
+    elif size < 2**40:
+        return f'{round(size / 2**30, 1)}G'
+    elif size < 2**50:
+        return f'{round(size / 2**40, 1)}T'
+
+
+if __name__ == '__main__':
+    drives = [('sda2', '/dev/sda2', 'Boot     ')]
+            #   ('sdb4', '/dev/sdb4', 'Windows  '),
+            #   ('sdc', '/run/media/rjslater/LinuxExternal', 'LinuxExternal'),
+            #   ('sdd1', '/run/media/rjslater/WindowsExternal', 'WindowsExternal')]
+
+    for drive in drives:
+        d = Drive(drive[0], drive[1], drive[2])
+        d.printUsageBar()

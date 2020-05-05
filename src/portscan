@@ -1,0 +1,155 @@
+#!/usr/bin/perl
+
+########################################################################################
+## NAME: portCheck                                                                    ##
+##                                                                                    ##
+## AUTHOR: Owen O'Connor                                                              ##
+##                                                                                    ##
+## OVERVIEW: sequentially steps over networking ports to see if any of them are       ##
+##   open.  This program is designed to provide for an easy first-check for security  ##
+##   vulnerabilities on any system that can run perl.  Note, however, that it is      ##
+##   not fail proof, and should not in any case be used as the only line of defense   ##
+##   against attacks.  As such, this software is provided as is, with no warranty.    ##                                                                                                     
+##                                                                                    ##                                                                                                     
+## LICENSE: This software is released under a creative commons                        ##                                                                                                     
+##              Attribution 4.0 International license                                 ##                                                                                                     
+########################################################################################                                                                                                     
+
+#Library to check if a port is open
+use IO::Socket::IP;
+
+#Library used to read command line arguments
+use Getopt::Std;
+
+
+
+#Stores the open ports found for later reference
+my @portsOpen = ();
+
+#Stores the current port that is being checked.
+#Note that this is global so that the program can print a 'interrupted at port X' message
+my $currentPort = 0;
+
+#Default command line options
+my %opts = (
+ 'u' => "localhost",  #The url to check
+ 't' => 1000          #The time to wait before giving up on a port and just saying that it's closed
+);
+
+#Read the command line options specified.  This function is a thing of beauty.
+getopts('aht:u:', \%opts);
+
+#If the user requested HELP
+##TODO: rewrite this so it flows better
+if($opts{'h'}) {
+  print << 'HELP';
+portCheck -- checks which communication ports on a certain host are open
+
+USAGE: portCheck [-ah] [-t port_timeout] [-u host_url] [ [starting_port] ending_port]
+
+By default, this checks ports on localhost.  By passing a -u argument followed by
+a url, you can specify what location to check.
+
+By default, this will only display ports that are open.  By passing '-a' as a
+command line argument, this will display output for all ports checked.
+
+By default, this will check all ports from 0 to 65535.  If one integer is passed
+as an argument, it will be used for the maximum port number to check (inclusive).
+If two integers are passed, they will be used as the range of port numbers to be
+checked (again, inclusive).
+
+By default, this tries to connect to a port for 1000 ms before giving up.  By
+passing a -t argument followed by an integer, you can specify how long of a
+time out to use.  Note that if you are checking remote ports, you should allow for
+sufficient communication time.
+
+Passing -h as an argument will print out this help message.
+
+-☃, the Unicode Snowman
+HELP
+}
+
+else {
+  #Add a signal catcher for SIGTERM, and redirect it so it prints out the 'end' stats
+  #This way, a users can still know how many ports they have open even if they have to
+  # stop the process in the middle of a run
+  $SIG{INT} = sub { printDone(1); exit @portsOpen + 0; };
+
+  #Initialize the start port and stop port values to the minimum and maximum allowed port values
+  my $from = 0;
+  my $to = 65535;
+
+  #If there are arguments specified, read them in
+  if (@ARGV == 1) {
+    $from = 0;
+    $to = shift;
+  } elsif (@ARGV >= 2) {
+    $from = shift;
+    $to = shift;
+  }
+
+  print "Checking ports from $from to $to on $opts{'u'}...\n\n";
+  #TODO: add ncurses or some such that displays the currentPort if the user doesn't want output for every port
+
+  #Begin checking the ports
+  for( $from..$to ) {
+    #Store the current port, in case the process is interrupted
+    $currentPort = $_;
+
+    #Try to open a connection to the current port
+    my $socket = IO::Socket::IP->new(PeerAddr => $opts{'u'}, PeerPort => $currentPort, Timeout => $opts{'t'} * 0.001);
+
+    if(!$socket) {
+      #Only print that the port was closed if the print all command line option was specified
+      print "\033[32;1mPort $currentPort is closed\033[0m\n" if $opts{'a'};
+    } else {
+      #If the port is open...
+      my $printString = "Port $currentPort is open!";
+      my $innerBar = "╳" x length($printString);
+
+      #Print out ig flashing red lights!
+      print << "PORTOPEN";
+
+\033[41;5;1m╳╳╳╳╳╳$innerBar╳╳╳╳╳╳\033[0m
+\033[41;5;1m╳╳╳╳╳\033[0m\033[41;3;1m $printString \033[0m\033[41;5;1m╳╳╳╳╳\033[0m
+\033[41;5;1m╳╳╳╳╳╳$innerBar╳╳╳╳╳╳\033[0m
+
+PORTOPEN
+
+      #And add it to the list of open ports.
+      push @openPorts, $currentPort;
+    }
+  }
+
+  #And we're done (Almost)
+  printDone(0);#Stores the open ports found for later reference
+}
+
+sub printDone {
+  #If a one was passed as an argument, the process was interrupted
+  my $doneString = (shift) ? "Port check interrupted at port $currentPort" : "Port check completed";
+
+  #Since the message displayed in the yellow box can vary in length, get the length of this message
+  my $borderLines = "─" x (length($doneString) + 2);
+
+  #A variable to store the proper pluralization of port for however many ports there were open
+  my $portPlural = @openPorts == 1 ? "" : "s";
+
+  #And get the number of open ports
+  my $numPortsOpen = @openPorts;
+
+  #Print out the final statistics
+  print <<"PRINT";
+
+\033[33;1m╭$borderLines╮\033[0m
+\033[33;1m│ \033[37;1m$doneString\033[33;1m │\033[0m
+\033[33;1m╰$borderLines╯\033[0m
+
+-You have $numPortsOpen port$portPlural open
+PRINT
+;
+print "Exiting with return code $numPortsOpen\n";
+exit $numPortsOpen;
+}
+
+#-☃, the Unicode Snowman
