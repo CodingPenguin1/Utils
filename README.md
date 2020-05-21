@@ -128,10 +128,46 @@ Usage: `sshsystem SYSTEM_NAME`
 
 Here are some links to programs I really enjoy from other users:
 
-[screenshot-actions by jroda198](https://github.com/jrodal98/screenshot-actions)
+[screenshot-actions](https://github.com/jrodal98/screenshot-actions)
 
-[thefuck by nvbn](https://github.com/nvbn/thefuck)
+[thefuck](https://github.com/nvbn/thefuck)
 
-[paleofetch by sam-barr](https://github.com/sam-barr/paleofetch)
+[paleofetch](https://github.com/sam-barr/paleofetch)
 
-[x2x by dottedmag](https://www.youtube.com/watch?v=umC_zUPGrp4&list=WL&index=7&t=0s)
+[x2x](https://www.youtube.com/watch?v=umC_zUPGrp4&list=WL&index=7&t=0s)i
+
+## Fun Programs
+
+Some programs that aren't really that useful but I like them so I put them here
+
+[doge](https://github.com/thiderman/doge)
+
+[fortune](https://wiki.archlinux.org/index.php/Fortune)
+
+[cowsay](https://github.com/piuccio/cowsay)
+
+[xcowsay](https://github.com/Tuczi/xcowsay)
+
+[lolcat](https://github.com/busyloop/lolcat)
+
+[sl](https://github.com/mtoyoda/sl)
+
+[figlet](http://www.figlet.org/)
+
+[toilet](http://caca.zoy.org/wiki/toilet)
+
+[bullshit](https://github.com/fceschmidt/bullshit-arch/)
+
+[cmatrix](https://github.com/abishekvashok/cmatrix)
+
+[asciiquarium](https://github.com/cmatsuoka/asciiquarium)
+
+[aafire](https://github.com/Softmuppen/aafire)
+
+[tty-clock](https://github.com/xorg62/tty-clock)
+
+`sudo visudo` (Add "Default insults")
+
+[hollywood](https://github.com/dustinkirkland/hollywood)
+
+[bb](https://aur.archlinux.org/packages/bb/)
