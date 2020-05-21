@@ -134,7 +134,9 @@ Here are some links to programs I really enjoy from other users:
 
 [paleofetch](https://github.com/sam-barr/paleofetch)
 
-[x2x](https://www.youtube.com/watch?v=umC_zUPGrp4&list=WL&index=7&t=0s)i
+[x2x](https://www.youtube.com/watch?v=umC_zUPGrp4&list=WL&index=7&t=0s)
+
+[xscreensaver](https://www.jwz.org/xscreensaver/)
 
 ## Fun Programs
 
