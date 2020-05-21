@@ -123,3 +123,10 @@ Language: Python
 Dependencies: None
 
 Usage: `sshsystem SYSTEM_NAME`
+
+## Other People's Programs
+
+Here are some links to programs I really enjoy from other users:
+(screenshot-actions by jroda198)[https://github.com/jrodal98/screenshot-actions]
+(thefuck by nvbn)[https://github.com/nvbn/thefuck]
+(paleofetch by sam-barr)[https://github.com/sam-barr/paleofetch]
