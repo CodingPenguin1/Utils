@@ -138,6 +138,8 @@ Here are some links to programs I really enjoy from other users:
 
 [xscreensaver](https://www.jwz.org/xscreensaver/)
 
+[mlocate](https://wiki.archlinux.org/index.php/Mlocate)
+
 ## Fun Programs
 
 Some programs that aren't really that useful but I like them so I put them here
