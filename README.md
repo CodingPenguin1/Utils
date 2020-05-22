@@ -1,4 +1,4 @@
-j# Utils
+# Utils
 
 This is a directory containing all the short, but useful, little scripts I use on all my Linux systems nearly every day. I store this in my home directory, and have added `~/Utils/bin` to my PATH.
 
