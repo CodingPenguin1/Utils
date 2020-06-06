@@ -140,6 +140,8 @@ Here are some links to programs I really enjoy from other users:
 
 [mlocate](https://wiki.archlinux.org/index.php/Mlocate)
 
+[lxappearance](https://www.archlinux.org/packages/community/x86_64/lxappearance/)
+
 ## Fun Programs
 
 Some programs that aren't really that useful but I like them so I put them here
