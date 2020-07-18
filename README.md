@@ -142,6 +142,8 @@ Here are some links to programs I really enjoy from other users:
 
 [lxappearance](https://www.archlinux.org/packages/community/x86_64/lxappearance/)
 
+[wallset](https://github.com/terroo/wallset)
+
 ## Fun Programs
 
 Some programs that aren't really that useful but I like them so I put them here
