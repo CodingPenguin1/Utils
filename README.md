@@ -144,6 +144,8 @@ Here are some links to programs I really enjoy from other users:
 
 [wallset](https://github.com/terroo/wallset)
 
+[pscircle](https://github.com/tuxarch/pscircle)
+
 ## Fun Programs
 
 Some programs that aren't really that useful but I like them so I put them here
