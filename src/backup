@@ -49,6 +49,10 @@ borg create -p                                         \
     --exclude '/home/rjslater/Karen/*'                 \
     --exclude '/home/rjslater/Steam'                   \
     --exclude '/home/rjslater/.thunderbird/*'          \
+    --exclude '/home/rjslater/Videos/OBS_Shared/*'     \
+    --exclude '/home/rjslater/Videos/VideoEditCache/*' \
+    --exclude '/home/rjslater/Videos/Movies/*'         \
+    --exclude '/home/rjslater/Hulk/*'                  \
     ::'{hostname}-{now}'                               \
     /home                                              \
 
